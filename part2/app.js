@@ -22,12 +22,13 @@ const walkRoutes = require('./routes/walkRoutes');
 const userRoutes = require('./routes/userRoutes');
 const loginRoutes = require('./routes/loginRoutes');
 const logoutRoutes = require('./routes/logoutRoutes');
+const ownerRoutes = require('./routes/ownerRoutes');
 
 app.use('/api/walks', walkRoutes);
 app.use('/api/users', userRoutes);
 app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
-
+app.use('/api/owner', ownerRoutes);
 
 // Export the app instead of listening here
 module.exports = app;
