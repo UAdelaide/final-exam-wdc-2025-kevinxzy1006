@@ -51,6 +51,7 @@
         const message = ref('');
         const error = ref('');
         const user = 3;
+        const userId = ref(null);
 
         async function loadWalkRequests() {
           try {
@@ -67,7 +68,7 @@
             const res = await fetch(`/api/walks/${requestId}/apply`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ walker_id: user })
+              body: JSON.stringify({ walker_id: currentUserId.value })
             });
             const result = await res.json();
 
@@ -81,8 +82,20 @@
           }
         }
 
-        onMounted(() => {
-          loadWalkRequests();
+        async function getCurrentUser() {
+          try {
+            const res = await fetch('/api/users/me');
+            if (!res.ok) throw new Error('Unable to fetch user info');
+            const user = await res.json();
+            currentUserId.value = user.id;
+          } catch (err) {
+            error.value = err.message;
+          }
+        }
+
+        onMounted(async () => {
+          await getCurrentUser();
+          await loadWalkRequests();
         });
 
         return {

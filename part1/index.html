@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Dog of the Day - Worst UX</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <style>
+        body {
+            background: linear-gradient(45deg, yellow, red);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: lime;
+            text-align: center;
+            user-select: none;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .dog-img {
+            width: 80vw;
+            height: 300px;
+            object-fit: cover;
+            border: 5px dotted magenta;
+            filter: grayscale(80%);
+            opacity: 0.7;
+        }
+
+        .hidden-btn {
+            background: none;
+            border: none;
+            color: transparent;
+            position: absolute;
+            top: -500px;
+            left: -500px;
+            font-size: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1 @click="loadDog">🐶 Dog of the Day (Try clicking me!)</h1>
+
+        <div v-if="dogUrl">
+            <img :src="dogUrl" alt="dog" class="dog-img" />
+        </div>
+
+        <button class="hidden-btn" @click="loadDog">Reload Dog</button>
+
+        <div>
+            <h2>Dog Name: The Mysterious Canine</h2>
+            <p>Breed: Unknown</p>
+            <p>Fun Fact: This dog only barks at shadows.</p>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    dogUrl: ''
+                }
+            },
+            mounted() {
+                this.loadDog()
+            },
+            methods: {
+                loadDog() {
+                    fetch('https://dog.ceo/api/breeds/image/random')
+                        .then(res => res.json())
+                        .then(data => { this.dogUrl = data.message })
+                        .catch(() => { })
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

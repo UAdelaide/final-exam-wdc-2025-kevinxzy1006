@@ -4,7 +4,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const [rows] = await req.db.query(`
-      SELECT d.name AS dog_name, d.size, u.username AS owner_username
+      SELECT DISTINCT d.name AS dog_name, d.size, u.username AS owner_username
       FROM Dogs d
       JOIN Users u ON d.owner_id = u.user_id
     `);
